@@ -1,0 +1,12 @@
+分布式 key-value数据库，各字段已经建好索引，按字段值排序
+执行的sql语句: select * from review where reply>0 order by date desc group by state
+
+化成下列执行函数：
+	1.selectFrom(tableName);
+		(并发)orderBy(fields);
+		(并发)filter(condition);
+		(并发)groupBy(state); --> 可以看做是多个filter，各自查询之后返回 结果集的数组
+		查询时，先看返回的数量，根据最小值先得出一个结果集，小的和大的求交集
+		如果最小的结果集都超出内存，考虑翻页（先取一部分）
+	
+	
